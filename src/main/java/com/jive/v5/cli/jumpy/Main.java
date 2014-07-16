@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.SimpleType;
@@ -125,6 +126,8 @@ public class Main implements UserInfo
         {
 
           ObjectMapper mapper = new ObjectMapper();
+          
+          mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
           ConstructorPropertiesAnnotationIntrospector.install(mapper);
 

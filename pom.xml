@@ -12,7 +12,7 @@
 
 
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.v5.cli.tail.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.v5.cli.jumpy.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 

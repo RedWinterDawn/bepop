@@ -62,6 +62,11 @@ public class Main implements UserInfo
         .metavar("site")
         .help("Site to connect to jumpy");
 
+    argp.addArgument("-u")
+        .dest("user")
+        .metavar("ssh-user")
+        .help("Bastion username");
+
     Namespace ns;
 
     try
@@ -94,7 +99,7 @@ public class Main implements UserInfo
       jsch.setKnownHosts(home.resolve("known_hosts").toAbsolutePath().toString());
       jsch.setConfigRepository(OpenSSHConfig.parseFile(home.resolve("config").toAbsolutePath().toString()));
 
-      Session session = jsch.getSession(null, BASTION, 22);
+      Session session = jsch.getSession(ns.getString("user"), BASTION, 22);
 
       session.setConfig("PreferredAuthentications", "publickey");
       session.setConfig("StrictHostKeyChecking", "no");

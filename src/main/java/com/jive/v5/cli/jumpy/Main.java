@@ -2,7 +2,9 @@ package com.jive.v5.cli.jumpy;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
@@ -33,10 +35,14 @@ public class Main implements UserInfo
 {
 
   private final static String BASTION = "bastion";
-  private final static String JUMPY_IP = "10.117.255.100";
 
   public static void main(String[] arg)
   {
+
+    Map<String, String> sites = new HashMap<>();
+
+    sites.put("pvu-1a", "10.117.255.100");
+    sites.put("dfw-1a", "10.118.255.100");
 
     ArgumentParser argp = ArgumentParsers.newArgumentParser("jumpy")
         .defaultHelp(true)
@@ -49,11 +55,12 @@ public class Main implements UserInfo
         .action(Arguments.version())
         .help("Show version number and exit");
 
-    argp.addArgument("-s", "--server")
-        .dest("server")
-        .setDefault(JUMPY_IP)
-        .metavar("server")
-        .help("Server to connect to");
+    argp.addArgument("-s", "--site")
+        .dest("site")
+        .setDefault("pvu-1a")
+        .choices(sites.keySet())
+        .metavar("site")
+        .help("Site to connect to jumpy");
 
     Namespace ns;
 
@@ -98,7 +105,7 @@ public class Main implements UserInfo
 
       session.connect(5000);
 
-      int assinged_port = session.setPortForwardingL(0, ns.getString("server"), 8080);
+      int assinged_port = session.setPortForwardingL(0, sites.get(ns.getString("site")), 8080);
 
       // now make a HTTP request to this port.
 

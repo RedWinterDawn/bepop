@@ -64,7 +64,7 @@
 
     <dependency>
       <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.usocket-jna</artifactId>
+      <artifactId>jsch.agentproxy.usocket-nc</artifactId>
       <version>0.0.7</version>
     </dependency>
 

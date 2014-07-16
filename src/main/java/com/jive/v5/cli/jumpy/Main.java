@@ -20,12 +20,12 @@ import com.jcraft.jsch.UserInfo;
 import com.jcraft.jsch.agentproxy.RemoteIdentityRepository;
 import com.jcraft.jsch.agentproxy.USocketFactory;
 import com.jcraft.jsch.agentproxy.connector.SSHAgentConnector;
-import com.jcraft.jsch.agentproxy.usocket.JNAUSocketFactory;
+import com.jcraft.jsch.agentproxy.usocket.NCUSocketFactory;
 import com.jive.jackson.ConstructorPropertiesAnnotationIntrospector;
 
 public class Main implements UserInfo
 {
-  
+
   private final static String BASTION = "bastion";
   private final static String JUMPY_IP = "10.117.255.100";
 
@@ -41,7 +41,8 @@ public class Main implements UserInfo
 
       if (SSHAgentConnector.isConnectorAvailable())
       {
-        USocketFactory usf = new JNAUSocketFactory();
+        // note: using the nc version to avoid an annoying window popping up every time!
+        USocketFactory usf = new NCUSocketFactory();
         SSHAgentConnector con = new SSHAgentConnector(usf);
         IdentityRepository irepo = new RemoteIdentityRepository(con);
         jsch.setIdentityRepository(irepo);
@@ -50,7 +51,10 @@ public class Main implements UserInfo
       jsch.setKnownHosts(home.resolve("known_hosts").toAbsolutePath().toString());
       jsch.setConfigRepository(OpenSSHConfig.parseFile(home.resolve("config").toAbsolutePath().toString()));
 
-      Session session = jsch.getSession("theo", BASTION, 22);
+      Session session = jsch.getSession(null, BASTION, 22);
+
+      session.setConfig("PreferredAuthentications", "publickey");
+      session.setConfig("StrictHostKeyChecking", "no");
 
       // username and password will be given via UserInfo interface.
 
@@ -122,7 +126,7 @@ public class Main implements UserInfo
   @Override
   public boolean promptYesNo(String arg0)
   {
-    return false;
+    return true;
   }
 
   @Override

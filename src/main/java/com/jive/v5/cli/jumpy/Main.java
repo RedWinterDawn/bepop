@@ -4,6 +4,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import net.sourceforge.argparse4j.inf.Namespace;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -31,6 +37,36 @@ public class Main implements UserInfo
 
   public static void main(String[] arg)
   {
+
+    ArgumentParser argp = ArgumentParsers.newArgumentParser("jumpy")
+        .defaultHelp(true)
+        .usage("jumpy [args]")
+        .version(Main.class.getPackage().getImplementationVersion())
+        .description("Show jumpy service states.")
+        .epilog(String.format("Command version %s\n", Main.class.getPackage().getImplementationVersion()));
+
+    argp.addArgument("--version")
+        .action(Arguments.version())
+        .help("Show version number and exit");
+
+    argp.addArgument("-s", "--server")
+        .dest("server")
+        .setDefault(JUMPY_IP)
+        .metavar("server")
+        .help("Server to connect to");
+
+    Namespace ns;
+
+    try
+    {
+      ns = argp.parseArgs(arg);
+    }
+    catch (ArgumentParserException e)
+    {
+      argp.handleError(e);
+      System.exit(1);
+      return;
+    }
 
     try
     {
@@ -62,7 +98,7 @@ public class Main implements UserInfo
 
       session.connect(5000);
 
-      int assinged_port = session.setPortForwardingL(0, JUMPY_IP, 8080);
+      int assinged_port = session.setPortForwardingL(0, ns.getString("server"), 8080);
 
       // now make a HTTP request to this port.
 

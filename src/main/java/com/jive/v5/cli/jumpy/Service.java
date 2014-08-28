@@ -7,6 +7,6 @@ import lombok.Value;
 @Value
 public class Service
 {
-  private String name;
-  private Map<String, String> properties;
+  private final String name;
+  private final Map<String, String> properties;
 }

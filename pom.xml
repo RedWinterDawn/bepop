@@ -1,144 +1,125 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.jive.v5</groupId>
+    <artifactId>parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>com.jive.bebop.plugins</groupId>
   <artifactId>jumpy-bebop-plugin</artifactId>
   <version>0.2-SNAPSHOT</version>
 
-
-  <properties>
-    <jive.nexus.url>http://repo.ftw.jiveip.net</jive.nexus.url>
-  </properties>
-
-
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.v5.cli.jumpy.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.v5.cli.jumpy.git
+    </developerConnection>
     <tag>HEAD</tag>
   </scm>
 
-  <build>
-    <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.jive.v5.cli.jumpy.Main</mainClass>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
+  <properties>
+    <deps.jsch.version>0.1.51</deps.jsch.version>
+    <deps.jsch-extension.version>0.0.7</deps.jsch-extension.version>
+    <deps.jline.version>2.12</deps.jline.version>
+    <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
+    <deps.jackson-extensions.version>1.3</deps.jackson-extensions.version>
+    <deps.v5-commons.version>0.28</deps.v5-commons.version>
+  </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.51</version>
+      <version>${deps.jsch.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch.agentproxy.sshagent</artifactId>
-      <version>0.0.7</version>
+      <version>${deps.jsch-extension.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch.agentproxy.usocket-nc</artifactId>
-      <version>0.0.7</version>
+      <version>${deps.jsch-extension.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch.agentproxy.jsch</artifactId>
-      <version>0.0.7</version>
+      <version>${deps.jsch-extension.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.jcraft</groupId>
+          <artifactId>jsch</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
-      <version>2.12</version>
+      <version>${deps.jline.version}</version>
     </dependency>
 
     <dependency>
       <groupId>net.sourceforge.argparse4j</groupId>
       <artifactId>argparse4j</artifactId>
-      <version>0.4.3</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.14.2</version>
+      <version>${deps.argparse4j.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.4</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.3.2</version>
     </dependency>
+
     <dependency>
       <groupId>com.jive.jackson-extensions</groupId>
       <artifactId>jackson-extensions</artifactId>
-      <version>1.1</version>
+      <version>${deps.jackson-extensions.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jive.v5.commons</groupId>
+      <artifactId>rest-client</artifactId>
+      <version>${deps.v5-commons.version}</version>
     </dependency>
   </dependencies>
 
-
-
-  <distributionManagement>
-
-    <repository>
-      <id>ftw</id>
-      <name>Jive FTW Repository</name>
-      <url>${jive.nexus.url}/content/repositories/releases</url>
-    </repository>
-
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ftw</id>
-      <name>Jive FTW Repository</name>
-      <url>${jive.nexus.url}/content/repositories/snapshots</url>
-    </snapshotRepository>
-
-  </distributionManagement>
-
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.jive.v5.cli.jumpy.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

@@ -102,11 +102,8 @@ public class Main implements UserInfo
                 .collect(Collectors.joining(",", "{", "}"));
           }
         })
-        .setDefault(FORMATTERS.get("table"))
-        .type((parser, arg1, value) ->
-        {
-          return FORMATTERS.get(value);
-        })
+        .setDefault(FORMATTERS.get("expanded"))
+        .type((parser, arg1, value) -> FORMATTERS.get(value))
         .help("Type of formatting for the output");
 
     final Namespace ns;
@@ -217,7 +214,7 @@ public class Main implements UserInfo
     }
     catch (final Exception e)
     {
-      System.out.println(e);
+      System.err.println(e);
     }
 
   }

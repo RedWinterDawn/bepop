@@ -3,6 +3,10 @@ package com.jive.v5.cli.jumpy;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import lombok.Cleanup;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +21,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.google.common.collect.ImmutableMap;
 import com.jcraft.jsch.IdentityRepository;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.OpenSSHConfig;
@@ -34,6 +39,7 @@ import com.jive.v5.commons.rest.client.RestClient;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.impl.Arguments;
+import net.sourceforge.argparse4j.inf.ArgumentChoice;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
@@ -42,6 +48,13 @@ public class Main implements UserInfo
 {
 
   private final static String BASTION = "bastion";
+
+  private static final Map<String, Formatter> FORMATTERS = ImmutableMap
+      .<String, Formatter> builder()
+      .put("table", new TableFormatter())
+      .put("basic", new BasicFormatter())
+      .put("expanded", new ExpandedFormatter())
+      .build();
 
   public static void main(final String[] arg)
   {
@@ -71,6 +84,30 @@ public class Main implements UserInfo
         .dest("user")
         .metavar("ssh-user")
         .help("Bastion username");
+
+    argp.addArgument("-f", "--format")
+        .choices(new ArgumentChoice()
+        {
+          @Override
+          public boolean contains(final Object val)
+          {
+            return FORMATTERS.values().contains(val);
+          }
+
+          @Override
+          public String textualFormat()
+          {
+            return FORMATTERS.keySet()
+                .stream()
+                .collect(Collectors.joining(",", "{", "}"));
+          }
+        })
+        .setDefault(FORMATTERS.get("table"))
+        .type((parser, arg1, value) ->
+        {
+          return FORMATTERS.get(value);
+        })
+        .help("Type of formatting for the output");
 
     final Namespace ns;
 
@@ -141,6 +178,7 @@ public class Main implements UserInfo
       jsch.setConfigRepository(OpenSSHConfig.parseFile(home.resolve("config").toAbsolutePath()
           .toString()));
 
+      @Cleanup("disconnect")
       final Session session = jsch.getSession(ns.getString("user"), BASTION, 22);
 
       session.setConfig("PreferredAuthentications", "publickey");
@@ -170,15 +208,12 @@ public class Main implements UserInfo
           final List<Service> services = mapper.readValue(res.getEntity().getContent(),
               CollectionType.construct(List.class, SimpleType.construct(Service.class)));
 
-          services.forEach((e) -> System.out.println(String.format("%35s %s", e.getName(),
-              e.getProperties())));
+          Formatter formatter = ns.get("format");
+          System.out.println(formatter.format(services));
 
         }
 
       }
-
-      session.disconnect();
-
     }
     catch (final Exception e)
     {

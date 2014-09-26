@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.jive.v5</groupId>
     <artifactId>parent</artifactId>
-    <version>7</version>
+    <version>9</version>
   </parent>
 
   <groupId>com.jive.bebop.plugins</groupId>
@@ -24,8 +24,8 @@
     <deps.jsch-extension.version>0.0.7</deps.jsch-extension.version>
     <deps.jline.version>2.12</deps.jline.version>
     <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
-    <deps.jackson-extensions.version>1.3</deps.jackson-extensions.version>
-    <deps.v5-commons.version>0.28</deps.v5-commons.version>
+    <deps.jackson-extensions.version>1.5</deps.jackson-extensions.version>
+    <deps.v5-commons.version>0.42</deps.v5-commons.version>
     <deps.ascii-table.version>1.0</deps.ascii-table.version>
   </properties>
 

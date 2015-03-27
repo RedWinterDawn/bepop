@@ -20,7 +20,7 @@
   <properties>
     <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
     <deps.ascii-table.version>1.0</deps.ascii-table.version>
-    <deps.jazz.version>0.7.76-SNAPSHOT</deps.jazz.version>
+    <deps.jazz.version>0.7.79-SNAPSHOT</deps.jazz.version>
     <deps.jackson-extensions.version>1.5</deps.jackson-extensions.version>
     <deps.jline.version>2.12</deps.jline.version>
     <deps.jsch.version>0.1.52</deps.jsch.version>

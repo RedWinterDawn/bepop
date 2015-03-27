@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 import lombok.NonNull;
 import lombok.experimental.Builder;
+import lombok.extern.slf4j.Slf4j;
 
 import com.google.common.net.HostAndPort;
 import com.google.common.reflect.TypeToken;
@@ -30,6 +31,7 @@ import com.jive.v5.cli.jumpy.jim.SshTunnelHandle;
  * @author David Valeri
  */
 @Builder
+@Slf4j
 public class DefaultIspTableDumper implements IspTableDumper
 {
   private static final Random random = new Random();
@@ -110,8 +112,9 @@ public class DefaultIspTableDumper implements IspTableDumper
                 .<T> alwaysCompose((r2, t2) ->
                 {
                   // Ignore destroy failure.
+                    log.error("Error destroying ISP Client.", t2);
 
-                  if (t == null)
+                  if (t != null)
                   {
                     return Pnky.immediatelyFailed(t);
                   }
@@ -159,12 +162,14 @@ public class DefaultIspTableDumper implements IspTableDumper
       public void announced(final boolean realtime, final long handle, final OriginatorId[] path,
           final T data)
       {
+        log.debug("Received [{}].", data);
         datas.add(data);
       }
 
       @Override
       public void synced()
       {
+        log.debug("Synched.");
         dumpFinishedPromise.resolve(new ArrayList<>(datas));
       }
     };

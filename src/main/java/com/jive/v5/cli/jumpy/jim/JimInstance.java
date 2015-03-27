@@ -16,4 +16,5 @@ public class JimInstance
   private final int bm;
   private final List<JimNetwork> networks;
   private final String branch;
+  private final String rid;
 }

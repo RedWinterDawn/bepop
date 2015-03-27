@@ -1,4 +1,3 @@
-
 properties:
-  com.jive.v5.commons: deps.v5-commons.version
   jackson-extensions: deps.jackson-extensions.version
+  com.jive.myco.jazz: dep.jazz.version

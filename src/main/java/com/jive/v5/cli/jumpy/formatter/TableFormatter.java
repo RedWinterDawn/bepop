@@ -1,4 +1,4 @@
-package com.jive.v5.cli.jumpy;
+package com.jive.v5.cli.jumpy.formatter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,19 +7,19 @@ import java.util.stream.Collectors;
 import com.bethecoder.ascii_table.ASCIITable;
 import com.bethecoder.ascii_table.ASCIITableHeader;
 import com.bethecoder.ascii_table.spec.IASCIITableAware;
+import com.jive.v5.jumpy.model.JumpyRecord;
 
 /**
  * @author Brandon Pedersen &lt;bpedersen@getjive.com&gt;
  */
 public class TableFormatter implements Formatter
 {
-
   @Override
-  public String format(final List<Service> services)
+  public String format(final List<JumpyRecord> jumpyRecords)
   {
-    final List<ASCIITableHeader> tableHeaders = services
+    final List<ASCIITableHeader> tableHeaders = jumpyRecords
         .parallelStream()
-        .map(Service::getProperties)
+        .map(JumpyRecord::getProperties)
         .flatMap((props) -> props.keySet().stream())
         .distinct()
         .sorted()
@@ -28,7 +28,7 @@ public class TableFormatter implements Formatter
 
     tableHeaders.add(0, new ASCIITableHeader("name", ASCIITable.ALIGN_LEFT));
 
-    final List<List<Object>> data = services
+    final List<List<Object>> data = jumpyRecords
         .parallelStream()
         .map((service) ->
         {

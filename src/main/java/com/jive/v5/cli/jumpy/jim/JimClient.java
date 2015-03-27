@@ -6,7 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import com.jive.myco.commons.concurrent.PnkyPromise;
 
 /**
  * @author Brandon Pedersen &lt;bpedersen@getjive.com&gt;
@@ -16,5 +16,9 @@ public interface JimClient
 {
   @Path("instances")
   @GET
-  ListenableFuture<List<JimInstance>> listInstances(@QueryParam("q") final String query);
+  PnkyPromise<List<JimInstance>> listInstances(@QueryParam("q") final String query);
+
+  @Path("instances/{rid}")
+  @GET
+  PnkyPromise<JimInstance> getInstance(@QueryParam("rid") final String resourceId);
 }

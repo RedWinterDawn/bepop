@@ -1,4 +1,4 @@
-package com.jive.v5.cli.jumpy;
+package com.jive.bebop.jumpy;
 
 import java.util.List;
 import java.util.Map;
@@ -13,16 +13,16 @@ import net.sourceforge.argparse4j.inf.Namespace;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.TypeToken;
+import com.jive.bebop.jumpy.formatter.BasicFormatter;
+import com.jive.bebop.jumpy.formatter.ExpandedFormatter;
+import com.jive.bebop.jumpy.formatter.Formatter;
+import com.jive.bebop.jumpy.formatter.TableFormatter;
+import com.jive.myco.bebop.utils.isp.DefaultIspTableDumper;
+import com.jive.myco.bebop.utils.isp.IspTableDumper;
+import com.jive.myco.bebop.utils.jim.DefaultJim;
+import com.jive.myco.bebop.utils.jim.Jim;
+import com.jive.myco.bebop.utils.jim.JimInstance;
 import com.jive.myco.isp.client.serialization.jackson.JacksonJsonIspSerializer;
-import com.jive.v5.cli.jumpy.formatter.BasicFormatter;
-import com.jive.v5.cli.jumpy.formatter.ExpandedFormatter;
-import com.jive.v5.cli.jumpy.formatter.Formatter;
-import com.jive.v5.cli.jumpy.formatter.TableFormatter;
-import com.jive.v5.cli.jumpy.isp.DefaultIspTableDumper;
-import com.jive.v5.cli.jumpy.isp.IspTableDumper;
-import com.jive.v5.cli.jumpy.jim.DefaultJim;
-import com.jive.v5.cli.jumpy.jim.Jim;
-import com.jive.v5.cli.jumpy.jim.JimInstance;
 import com.jive.v5.jumpy.model.JumpyRecord;
 
 /**

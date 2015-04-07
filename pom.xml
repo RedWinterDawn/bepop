@@ -20,19 +20,17 @@
   <properties>
     <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
     <deps.ascii-table.version>1.0</deps.ascii-table.version>
-    <deps.jazz.version>0.7.79-SNAPSHOT</deps.jazz.version>
-    <deps.jackson-extensions.version>1.5</deps.jackson-extensions.version>
+    <deps.myco-bebop-utils.version>1.0.0-SNAPSHOT</deps.myco-bebop-utils.version>
     <deps.jline.version>2.12</deps.jline.version>
-    <deps.jsch.version>0.1.52</deps.jsch.version>
-    <deps.jsch-extension.version>0.0.9</deps.jsch-extension.version>
+    
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.jive.myco.jazz</groupId>
-        <artifactId>jazz-bom</artifactId>
-        <version>${deps.jazz.version}</version>
+        <groupId>com.jive.myco.bebop.utils</groupId>
+        <artifactId>myco-bebop-utils-bom</artifactId>
+        <version>${deps.myco-bebop-utils.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -40,30 +38,15 @@
   </dependencyManagement>
 
   <dependencies>
-  
+ 
     <dependency>
-      <groupId>com.jive.myco.jazz.api</groupId>
-      <artifactId>jazz-api-rest-client</artifactId>
+      <groupId>com.jive.myco.bebop.utils</groupId>
+      <artifactId>myco-bebop-utils-jim</artifactId>
     </dependency>
     
     <dependency>
-      <groupId>com.jive.myco.jazz</groupId>
-      <artifactId>jazz-rest-client</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.jive.myco.isp</groupId>
-      <artifactId>isp-client-api</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.jive.myco.isp</groupId>
-      <artifactId>isp-client</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.jive.myco.isp</groupId>
-      <artifactId>isp-client-serializer-jackson</artifactId>
+      <groupId>com.jive.myco.bebop.utils</groupId>
+      <artifactId>myco-bebop-utils-isp</artifactId>
     </dependency>
 
     <dependency>
@@ -83,36 +66,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch</artifactId>
-      <version>${deps.jsch.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.sshagent</artifactId>
-      <version>${deps.jsch-extension.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.usocket-nc</artifactId>
-      <version>${deps.jsch-extension.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.jsch</artifactId>
-      <version>${deps.jsch-extension.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.jcraft</groupId>
-          <artifactId>jsch</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
       <groupId>jline</groupId>
       <artifactId>jline</artifactId>
       <version>${deps.jline.version}</version>
@@ -122,16 +75,6 @@
       <groupId>net.sourceforge.argparse4j</groupId>
       <artifactId>argparse4j</artifactId>
       <version>${deps.argparse4j.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-joda</artifactId>
     </dependency>
 
   </dependencies>

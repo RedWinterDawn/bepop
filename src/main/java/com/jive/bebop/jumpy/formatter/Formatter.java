@@ -1,4 +1,4 @@
-package com.jive.v5.cli.jumpy.formatter;
+package com.jive.bebop.jumpy.formatter;
 
 import java.util.List;
 

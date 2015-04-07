@@ -87,7 +87,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.jive.v5.cli.jumpy.Main</mainClass>
+              <mainClass>com.jive.bebop.jumpy.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

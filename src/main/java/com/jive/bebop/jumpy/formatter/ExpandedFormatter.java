@@ -1,20 +1,21 @@
-package com.jive.v5.cli.jumpy;
+package com.jive.bebop.jumpy.formatter;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.jive.v5.jumpy.model.JumpyRecord;
+
 /**
  * @author Brandon Pedersen &lt;bpedersen@getjive.com&gt;
  */
 public class ExpandedFormatter implements Formatter
 {
-
   @Override
-  public String format(final List<Service> services)
+  public String format(final List<JumpyRecord> jumpyRecords)
   {
-    return services
+    return jumpyRecords
         .parallelStream()
         .<String> map(
             (service) ->

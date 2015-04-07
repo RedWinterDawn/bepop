@@ -1,7 +1,9 @@
-package com.jive.v5.cli.jumpy;
+package com.jive.bebop.jumpy.formatter;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.jive.v5.jumpy.model.JumpyRecord;
 
 /**
  * @author Brandon Pedersen &lt;bpedersen@getjive.com&gt;
@@ -10,9 +12,9 @@ public class BasicFormatter implements Formatter
 {
 
   @Override
-  public String format(final List<Service> services)
+  public String format(final List<JumpyRecord> jumpyRecords)
   {
-    return services.parallelStream()
+    return jumpyRecords.parallelStream()
         .<String> map((service) ->
             String.format("%35s %s", service.getName(), service.getProperties()))
         .collect(Collectors.joining(System.lineSeparator()));

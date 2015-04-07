@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.jive.v5</groupId>
+    <groupId>com.jive.myco</groupId>
     <artifactId>parent</artifactId>
-    <version>9</version>
+    <version>36</version>
   </parent>
 
   <groupId>com.jive.bebop.plugins</groupId>
@@ -12,51 +13,56 @@
   <version>0.3-SNAPSHOT</version>
 
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.v5.cli.jumpy.git
-    </developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.bebop.jumpy.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
   <properties>
-    <deps.jsch.version>0.1.51</deps.jsch.version>
-    <deps.jsch-extension.version>0.0.7</deps.jsch-extension.version>
-    <deps.jline.version>2.12</deps.jline.version>
     <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
-    <deps.jackson-extensions.version>1.5</deps.jackson-extensions.version>
-    <deps.v5-commons.version>0.42</deps.v5-commons.version>
     <deps.ascii-table.version>1.0</deps.ascii-table.version>
+    <deps.myco-bebop-utils.version>1.0.0-SNAPSHOT</deps.myco-bebop-utils.version>
+    <deps.jline.version>2.12</deps.jline.version>
+    
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.jive.myco.bebop.utils</groupId>
+        <artifactId>myco-bebop-utils-bom</artifactId>
+        <version>${deps.myco-bebop-utils.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
-
+ 
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch</artifactId>
-      <version>${deps.jsch.version}</version>
+      <groupId>com.jive.myco.bebop.utils</groupId>
+      <artifactId>myco-bebop-utils-jim</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.jive.myco.bebop.utils</groupId>
+      <artifactId>myco-bebop-utils-isp</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.sshagent</artifactId>
-      <version>${deps.jsch-extension.version}</version>
+      <groupId>com.jive.jackson-extensions</groupId>
+      <artifactId>jackson-extensions</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.usocket-nc</artifactId>
-      <version>${deps.jsch-extension.version}</version>
+      <groupId>com.bethecoder</groupId>
+      <artifactId>ascii-table</artifactId>
+      <version>${deps.ascii-table.version}</version>
     </dependency>
-
+    
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch.agentproxy.jsch</artifactId>
-      <version>${deps.jsch-extension.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.jcraft</groupId>
-          <artifactId>jsch</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
 
     <dependency>
@@ -71,44 +77,6 @@
       <version>${deps.argparse4j.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.jive.jackson-extensions</groupId>
-      <artifactId>jackson-extensions</artifactId>
-      <version>${deps.jackson-extensions.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-joda</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.jive.v5.commons</groupId>
-      <artifactId>rest-client</artifactId>
-      <version>${deps.v5-commons.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.bethecoder</groupId>
-      <artifactId>ascii-table</artifactId>
-      <version>${deps.ascii-table.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -119,7 +87,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.jive.v5.cli.jumpy.Main</mainClass>
+              <mainClass>com.jive.bebop.jumpy.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

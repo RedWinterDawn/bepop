@@ -31,13 +31,11 @@ import com.jive.v5.jumpy.model.JumpyRecord;
 public class Main
 {
   private static final Map<String, Formatter> FORMATTERS = ImmutableMap
-      .<String, Formatter> builder()
+      .<String, Formatter>builder()
       .put("table", new TableFormatter())
       .put("basic", new BasicFormatter())
       .put("expanded", new ExpandedFormatter())
       .build();
-
-  private static String site;
 
   public static void main(final String[] arg)
   {
@@ -98,8 +96,6 @@ public class Main
     try (Jim jim = new DefaultJim())
     {
       ns = argp.parseArgs(arg);
-      site = ns.getString("site");
-
       jim.init();
 
       final List<JimInstance> instances = jim.listInstances("reflector");
@@ -128,7 +124,7 @@ public class Main
       if (ns.getBoolean("local"))
       {
         jumpyRecords = jumpyRecords.stream()
-            .filter(Main::checkSite)
+            .filter(jr -> jr.getProperties().getOrDefault("jazz.rt.coordinates", "").contains(site))
             .collect(Collectors.toList());
       }
 
@@ -146,8 +142,4 @@ public class Main
     }
   }
 
-  private static boolean checkSite(JumpyRecord record)
-  {
-    return record.getProperties().getOrDefault("jazz.rt.coordinates", "").contains(site);
-  }
 }

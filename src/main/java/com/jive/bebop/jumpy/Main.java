@@ -31,7 +31,7 @@ import com.jive.v5.jumpy.model.JumpyRecord;
 public class Main
 {
   private static final Map<String, Formatter> FORMATTERS = ImmutableMap
-      .<String, Formatter> builder()
+      .<String, Formatter>builder()
       .put("table", new TableFormatter())
       .put("basic", new BasicFormatter())
       .put("expanded", new ExpandedFormatter())
@@ -60,6 +60,10 @@ public class Main
         .setDefault("pvu-1a")
         .metavar("site")
         .help("Site to connect to jumpy");
+
+    argp.addArgument("-l", "--local")
+        .action(Arguments.storeTrue())
+        .help("Only show services registered in the specified site");
 
     argp.addArgument("-u")
         .dest("user")
@@ -92,7 +96,6 @@ public class Main
     try (Jim jim = new DefaultJim())
     {
       ns = argp.parseArgs(arg);
-
       jim.init();
 
       final List<JimInstance> instances = jim.listInstances("reflector");
@@ -112,11 +115,18 @@ public class Main
 
       final Formatter formatter = ns.get("format");
 
-      final List<JumpyRecord> jumpyRecords = jumpyTableDumper
+      List<JumpyRecord> jumpyRecords = jumpyTableDumper
           .dumpTable(
               instance,
               JacksonJsonIspSerializer.createDefault(),
               TypeToken.of(JumpyRecord.class));
+
+      if (ns.getBoolean("local"))
+      {
+        jumpyRecords = jumpyRecords.stream()
+            .filter(jr -> jr.getProperties().getOrDefault("jazz.rt.coordinates", "").contains(site))
+            .collect(Collectors.toList());
+      }
 
       System.out.println(formatter.format(jumpyRecords));
     }
@@ -131,4 +141,5 @@ public class Main
       System.err.println(e);
     }
   }
+
 }

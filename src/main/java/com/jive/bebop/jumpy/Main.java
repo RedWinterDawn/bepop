@@ -2,6 +2,9 @@ package com.jive.bebop.jumpy;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
@@ -11,6 +14,9 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.reflect.TypeToken;
 import com.jive.bebop.jumpy.formatter.BasicFormatter;
@@ -36,6 +42,7 @@ public class Main
       .put("basic", new BasicFormatter())
       .put("expanded", new ExpandedFormatter())
       .build();
+  public static final Splitter LIST_SEPARATOR = Splitter.on(",");
 
   public static void main(final String[] arg)
   {
@@ -64,6 +71,20 @@ public class Main
     argp.addArgument("-l", "--local")
         .action(Arguments.storeTrue())
         .help("Only show services registered in the specified site");
+
+    argp.addArgument("search")
+        .nargs("*")
+        .help("Properties to match. Syntax: 'property-name:regex property-name:regex...'")
+        .type((parser, argument, s) ->
+        {
+          String[] kv = s.split(":", 2);
+          return Pair.of(Pattern.compile(kv[0]), Pattern.compile(kv[1]));
+        });
+
+    argp.addArgument("--props")
+        .help("show only these properties")
+        .type((argumentParser, argument, s) -> LIST_SEPARATOR.splitToList(s).stream()
+            .map(Pattern::compile).collect(Collectors.toList()));
 
     argp.addArgument("-u")
         .dest("user")
@@ -128,6 +149,56 @@ public class Main
             .collect(Collectors.toList());
       }
 
+      if (ns.get("search") != null)
+      {
+        final List<Pair<Pattern,Pattern>> search = ns.get("search");
+        jumpyRecords = jumpyRecords.stream()
+            .filter(jr ->
+            {
+              boolean allPropertiesMatch = true;
+              for (Pair<Pattern,Pattern> prop : search)
+              {
+                final Optional<String> actualKey =
+                    jr.getProperties().keySet().stream()
+                        .filter(k -> prop.getKey().matcher(k).find())
+                        .findFirst();
+                if (actualKey.isPresent() == false && prop.getKey().pattern().equals("name"))
+                {
+                  allPropertiesMatch &= prop.getValue().matcher(jr.getName()).find();
+                }
+                else
+                {
+                  allPropertiesMatch &= actualKey
+                      .map(k -> prop.getValue()
+                          .matcher(jr.getProperties().getOrDefault(k, ""))
+                          .find())
+                      .orElse(false);
+                }
+              }
+
+              return allPropertiesMatch;
+            })
+            .collect(Collectors.toList());
+      }
+
+      final List<Pattern> requestedProperties = ns.get("props");
+      if (requestedProperties != null && !requestedProperties.isEmpty())
+      {
+        jumpyRecords.forEach(jr ->
+            {
+              Map<String,String> properties = jr.getProperties();
+              final Map<String, String> filtered = properties.entrySet().stream()
+                  .filter(e ->
+                      requestedProperties.stream()
+                          .filter(p -> p.matcher(e.getKey()).find())
+                          .findFirst()
+                          .isPresent())
+                  .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+              properties.clear();
+              properties.putAll(filtered);
+            });
+      }
+
       System.out.println(formatter.format(jumpyRecords));
     }
     catch (final ArgumentParserException e)
@@ -139,6 +210,7 @@ public class Main
     catch (final Exception e)
     {
       System.err.println(e);
+      e.printStackTrace();
     }
   }
 

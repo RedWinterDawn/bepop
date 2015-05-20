@@ -159,7 +159,8 @@ public class Main
               for (Pair<Pattern,Pattern> prop : search)
               {
                 final Optional<String> actualKey =
-                    jr.getProperties().keySet().stream().filter(k -> prop.getKey().matcher(k).find())
+                    jr.getProperties().keySet().stream()
+                        .filter(k -> prop.getKey().matcher(k).find())
                         .findFirst();
                 if (actualKey.isPresent() == false && prop.getKey().pattern().equals("name"))
                 {
@@ -167,9 +168,11 @@ public class Main
                 }
                 else
                 {
-                  allPropertiesMatch &= actualKey.map(k -> prop.getValue()
-                      .matcher(jr.getProperties().getOrDefault(k, ""))
-                      .find()).orElse(false);
+                  allPropertiesMatch &= actualKey
+                      .map(k -> prop.getValue()
+                          .matcher(jr.getProperties().getOrDefault(k, ""))
+                          .find())
+                      .orElse(false);
                 }
               }
 

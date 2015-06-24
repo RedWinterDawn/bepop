@@ -19,7 +19,7 @@
   <properties>
     <deps.argparse4j.version>0.4.3</deps.argparse4j.version>
     <deps.ascii-table.version>1.0</deps.ascii-table.version>
-    <deps.myco-bebop-utils.version>1.0.0</deps.myco-bebop-utils.version>
+    <deps.myco-bebop-utils.version>1.1.0-SNAPSHOT</deps.myco-bebop-utils.version>
     <deps.jline.version>2.12</deps.jline.version>
     
   </properties>

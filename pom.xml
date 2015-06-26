@@ -9,11 +9,11 @@
 
   <groupId>com.jive.bebop.plugins</groupId>
   <artifactId>jumpy-bebop-plugin</artifactId>
-  <version>0.5.1-SNAPSHOT</version>
+  <version>0.5.1</version>
 
   <scm>
     <developerConnection>scm:git:ssh://git@github.com/jive/com.jive.bebop.jumpy.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>0.5.1</tag>
   </scm>
 
   <properties>
